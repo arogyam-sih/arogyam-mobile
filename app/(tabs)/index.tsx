@@ -3,39 +3,6 @@ import { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 
-<<<<<<< HEAD
-import * as Location from "expo-location";
-
-export default function Tab() {
-  const [selectedLanguage, setSelectedLanguage] = useState();
-  const [location, setLocation] = useState<Location.LocationObject | null>(
-    null,
-  );
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
-
-  let text = "Waiting..";
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
-  }
-
-  console.log(text);
-
-=======
 type Item = {
   name: string;
   type: string;
@@ -75,7 +42,6 @@ export default function Tab() {
     setItems(l);
   }, []);
 
->>>>>>> 9c0c300 (feat: appointments)
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>

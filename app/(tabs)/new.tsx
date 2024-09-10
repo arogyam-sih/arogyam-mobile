@@ -4,8 +4,8 @@ import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";
 
 import * as Location from "expo-location";
-import { Input } from "@/components/Input";
 import { DateTimePickerAndroid, DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { Input } from "@/components/Input";
 
 export default function Tab() {
   const [selectedLanguage, setSelectedLanguage] = useState();

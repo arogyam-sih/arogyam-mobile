@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, Button, Text } from "react-native";
+import { View, TextInput, Button, Text, StyleSheet } from "react-native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./types";
 import { useNavigation } from "@react-navigation/native";
@@ -26,11 +26,11 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <View className="flex-1 justify-center items-center p-6">
+    <View style={styles.container}>
       {!isCodeSent ? (
         <>
           <TextInput
-            className="w-full p-4 mb-4 border rounded-lg border-gray-300"
+            style={styles.input}
             placeholder="Enter phone number"
             keyboardType="phone-pad"
             onChangeText={(text) => setPhoneNumber(text)}
@@ -41,7 +41,7 @@ const LoginScreen: React.FC = () => {
       ) : (
         <>
           <TextInput
-            className="w-full p-4 mb-4 border rounded-lg border-gray-300"
+            style={styles.input}
             placeholder="Enter verification code"
             keyboardType="number-pad"
             onChangeText={(text) => setVerificationCode(text)}
@@ -53,5 +53,22 @@ const LoginScreen: React.FC = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  input: {
+    width: '100%',
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: '#d1d5db',
+  },
+});
 
 export default LoginScreen;

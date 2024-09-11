@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Image } from "expo-image";
 
 const LoginScreen: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -57,6 +58,14 @@ const LoginScreen: React.FC = () => {
     <View style={styles.container}>
       {!isCodeSent ? (
         <>
+          <Image
+            source={require("../assets/images/arogyam.png")}
+            style={{
+              width: 699 / 3,
+              height: 331 / 3,
+              backgroundColor: "rgb(0,0,0)",
+            }}
+          />
           <TextInput
             style={styles.input}
             placeholder="Enter your name"

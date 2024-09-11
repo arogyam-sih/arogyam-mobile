@@ -9,20 +9,43 @@ import {
   Linking,
 } from "react-native";
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const LoginScreen: React.FC = () => {
+  const [name, setName] = useState<string>("");
   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [verificationCode, setVerificationCode] = useState<string>("");
   const [isCodeSent, setIsCodeSent] = useState<boolean>(false);
 
   const sendCode = () => {
-    setIsCodeSent(true);
+    if (name && phoneNumber) {
+      // Here you would typically call your backend API to send the verification code
+      console.log(`Sending code to ${phoneNumber} for ${name}`);
+      setIsCodeSent(true);
+    } else {
+      // You might want to show an error message here
+      console.log("Please enter both name and phone number");
+    }
   };
 
-  const confirmCode = () => {
+  const confirmCode = async () => {
     if (verificationCode) {
-      // Redirect to the index page of the (tabs) group
-      router.replace("/(tabs)");
+      try {
+        // Here you would typically verify the code with your backend
+        console.log(`Verifying code: ${verificationCode}`);
+
+        // If verification is successful, save the user's name
+        await AsyncStorage.setItem("userName", name);
+        await AsyncStorage.setItem("userToken", "some-unique-token"); // Set a user token to indicate logged in state
+
+        // Redirect to the index page of the (tabs) group
+        router.replace("/(tabs)");
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
+    } else {
+      // You might want to show an error message here
+      console.log("Please enter the verification code");
     }
   };
 
@@ -34,6 +57,12 @@ const LoginScreen: React.FC = () => {
     <View style={styles.container}>
       {!isCodeSent ? (
         <>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your name"
+            onChangeText={(text) => setName(text)}
+            value={name}
+          />
           <TextInput
             style={styles.input}
             placeholder="Enter phone number"

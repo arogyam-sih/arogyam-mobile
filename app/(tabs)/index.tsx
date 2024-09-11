@@ -184,6 +184,13 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 15,
     width: "48%",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     justifyContent: "center",
   },
   greetingText: {

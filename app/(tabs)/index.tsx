@@ -17,25 +17,36 @@ type Appointment = {
   type: string;
   time: string;
   price: string;
+  hospital: string;
 };
 
-const AppointmentItem = ({ item }: { item: Appointment }) => (
-  <View style={styles.appointmentItem}>
+const AppointmentItem = ({
+  item,
+  onPress,
+}: {
+  item: Appointment;
+  onPress?: () => void;
+}) => (
+  <TouchableOpacity onPress={onPress} style={styles.appointmentItem}>
     <View style={styles.appointmentInfo}>
       <Text style={styles.name}>{item.name}</Text>
       <Text style={styles.type}>{item.type}</Text>
+      <Text style={styles.hospital}>Hospital: {item.hospital}</Text>
     </View>
     <View style={styles.timePrice}>
       <Text style={styles.time}>{item.time}</Text>
       {item.price && <Text style={styles.price}>{item.price}</Text>}
     </View>
     <Feather name="more-vertical" size={20} color="#C7C7CC" />
-  </View>
+  </TouchableOpacity>
 );
 
 export default function HomeScreen() {
   const [userName, setUserName] = useState<string>("");
   const [appointments, setAppointments] = useState<Appointment[]>([]);
+  const [previousAppointments, setPreviousAppointments] = useState<
+    Appointment[]
+  >([]);
   const [ongoingAppointment, setOngoingAppointment] =
     useState<Appointment | null>(null);
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
@@ -58,21 +69,48 @@ export default function HomeScreen() {
 
     // Mock data for appointments
     const mockAppointments = [
-      { name: "John Doe", type: "Dentist", time: "10:00 AM", price: "$100" },
+      {
+        name: "John Doe",
+        type: "Dentist",
+        time: "10:00 AM",
+        price: "$100",
+        hospital: "St. Mary's",
+      },
       {
         name: "Jane Smith",
         type: "Cardiologist",
         time: "2:00 PM",
         price: "$150",
+        hospital: "City Hospital",
       },
       {
         name: "Bob Johnson",
         type: "Dermatologist",
         time: "4:30 PM",
         price: "$120",
+        hospital: "Green Valley Clinic",
       },
     ];
     setAppointments(mockAppointments);
+
+    // Mock data for previous appointments
+    const mockPreviousAppointments = [
+      {
+        name: "Alice Cooper",
+        type: "Orthopedic",
+        time: "9:00 AM",
+        price: "$200",
+        hospital: "Orthopedic Center",
+      },
+      {
+        name: "Michael Brown",
+        type: "Ophthalmologist",
+        time: "11:30 AM",
+        price: "$90",
+        hospital: "Eye Clinic",
+      },
+    ];
+    setPreviousAppointments(mockPreviousAppointments);
 
     // Set a mock ongoing appointment
     setOngoingAppointment(mockAppointments[0]);
@@ -89,6 +127,11 @@ export default function HomeScreen() {
       setShowConfirmation(false);
       setShowFeedbackModal(false);
     }, 2000);
+  };
+
+  const handlePreviousAppointmentPress = (appointment: Appointment) => {
+    // Open the feedback modal when a previous appointment is pressed
+    setShowFeedbackModal(true);
   };
 
   return (
@@ -109,7 +152,7 @@ export default function HomeScreen() {
                   {ongoingAppointment.name}
                 </Text>
                 <Text style={styles.appointmentType}>
-                  {ongoingAppointment.type}
+                  {ongoingAppointment.type}, {ongoingAppointment.hospital}
                 </Text>
                 <Text style={styles.appointmentTime}>
                   {ongoingAppointment.time}
@@ -126,6 +169,15 @@ export default function HomeScreen() {
         <Text style={styles.sectionTitle}>Upcoming Appointments</Text>
         {appointments.map((item, index) => (
           <AppointmentItem key={index} item={item} />
+        ))}
+
+        <Text style={styles.sectionTitle}>Previous Appointments</Text>
+        {previousAppointments.map((item, index) => (
+          <AppointmentItem
+            key={index}
+            item={item}
+            onPress={() => handlePreviousAppointmentPress(item)}
+          />
         ))}
       </ScrollView>
 
@@ -327,5 +379,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#4CD964",
     textAlign: "center",
+  },
+
+  hospital: {
+    fontSize: 12,
+    color: "#4A4A4A",
+    marginTop: 4,
+    fontStyle: "italic",
   },
 });
